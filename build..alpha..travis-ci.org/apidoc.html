@@ -1,0 +1,230 @@
+<div class="apidocDiv">
+<style>
+/*csslint
+*/
+.apidocDiv {
+    background: #fff;
+    font-family: Arial, Helvetica, sans-serif;
+}
+.apidocDiv a[href] {
+    color: #33f;
+    font-weight: bold;
+    text-decoration: none;
+}
+.apidocDiv a[href]:hover {
+    text-decoration: underline;
+}
+.apidocCodeCommentSpan {
+    background: #bbf;
+    color: #000;
+    display: block;
+}
+.apidocCodeKeywordSpan {
+    color: #d00;
+    font-weight: bold;
+}
+.apidocCodePre {
+    background: #eef;
+    border: 1px solid;
+    color: #777;
+    padding: 5px;
+    white-space: pre-wrap;
+}
+.apidocFooterDiv {
+    margin-top: 20px;
+    text-align: center;
+}
+.apidocModuleLi {
+    margin-top: 10px;
+}
+.apidocSectionDiv {
+    border-top: 1px solid;
+    margin-top: 20px;
+}
+.apidocSignatureSpan {
+    color: #777;
+    font-weight: bold;
+}
+</style>
+<h1>api documentation for
+    <a
+
+        href="https://github.com/clessg/progress-bar-webpack-plugin#readme"
+
+    >progress-bar-webpack-plugin (v1.9.3)</a>
+</h1>
+<h4>A progress bar for Webpack.</h4>
+<div class="apidocSectionDiv"><a
+    href="#apidoc.tableOfContents"
+    id="apidoc.tableOfContents"
+><h1>table of contents</h1></a><ol>
+
+    <li class="apidocModuleLi"><a href="#apidoc.module.progress-bar-webpack-plugin">module progress-bar-webpack-plugin</a><ol>
+
+        <li>
+
+            <a class="apidocElementLiA" href="#apidoc.element.progress-bar-webpack-plugin.progress-bar-webpack-plugin">
+            function <span class="apidocSignatureSpan"></span>progress-bar-webpack-plugin
+            <span class="apidocSignatureSpan">(options)</span>
+            </a>
+
+        </li>
+
+        <li>
+
+            <a class="apidocElementLiA" href="#apidoc.element.progress-bar-webpack-plugin.toString">
+            function <span class="apidocSignatureSpan">progress-bar-webpack-plugin.</span>toString
+            <span class="apidocSignatureSpan">()</span>
+            </a>
+
+        </li>
+
+    </ol></li>
+
+    <li class="apidocModuleLi"><a href="#apidoc.module.progress-bar-webpack-plugin.toString">module progress-bar-webpack-plugin.toString</a><ol>
+
+        <li>
+
+            <a class="apidocElementLiA" href="#apidoc.element.progress-bar-webpack-plugin.toString.toString">
+            function <span class="apidocSignatureSpan">progress-bar-webpack-plugin.</span>toString
+            <span class="apidocSignatureSpan">()</span>
+            </a>
+
+        </li>
+
+    </ol></li>
+
+</ol></div>
+
+<div class="apidocSectionDiv">
+<h1><a href="#apidoc.module.progress-bar-webpack-plugin" id="apidoc.module.progress-bar-webpack-plugin">module progress-bar-webpack-plugin</a></h1>
+
+
+    <h2>
+        <a href="#apidoc.element.progress-bar-webpack-plugin.progress-bar-webpack-plugin" id="apidoc.element.progress-bar-webpack-plugin.progress-bar-webpack-plugin">
+        function <span class="apidocSignatureSpan"></span>progress-bar-webpack-plugin
+        <span class="apidocSignatureSpan">(options)</span>
+        </a>
+    </h2>
+    <ul>
+    <li>description and source-code<pre class="apidocCodePre">function ProgressBarPlugin(options) {
+  options = options || {};
+
+  var stream = options.stream || process.stderr;
+  var enabled = stream &#x26;&#x26; stream.isTTY;
+
+  if (!enabled) {
+    return function () {};
+  }
+
+  var barLeft = chalk.bold(&#x27;[&#x27;);
+  var barRight = chalk.bold(&#x27;]&#x27;);
+  var preamble = chalk.cyan.bold(&#x27;  build &#x27;) + barLeft;
+  var barFormat = options.format || preamble + &#x27;:bar&#x27; + barRight + chalk.green.bold(&#x27; :percent&#x27;);
+  var summary = options.summary !== false;
+  var summaryContent = options.summaryContent;
+  var customSummary = options.customSummary;
+
+  delete options.format;
+  delete options.total;
+  delete options.summary;
+  delete options.summaryContent;
+  delete options.customSummary;
+
+  var barOptions = Object.assign({
+    complete: &#x27;=&#x27;,
+    incomplete: &#x27; &#x27;,
+    width: 20,
+    total: 100,
+    clear: true
+  }, options);
+
+  var bar = new ProgressBar(barFormat, barOptions);
+
+  var running = false;
+  var startTime = 0;
+  var lastPercent = 0;
+
+  return new webpack.ProgressPlugin(function (percent, msg) {
+    if (!running &#x26;&#x26; lastPercent !== 0 &#x26;&#x26; !customSummary) {
+      stream.write(&#x27;\n&#x27;);
+    }
+
+    var newPercent = Math.ceil(percent * barOptions.width);
+
+    if (lastPercent !== newPercent) {
+      bar.update(percent, {
+        msg: msg
+      });
+      lastPercent = newPercent;
+    }
+
+    if (!running) {
+      running = true;
+      startTime = new Date;
+      lastPercent = 0;
+    } else if (percent === 1) {
+      var now = new Date;
+      var buildTime = (now - startTime) / 1000 + &#x27;s&#x27;;
+
+      bar.terminate();
+
+      if (summary) {
+        stream.write(chalk.green.bold(&#x27;Build completed in &#x27; + buildTime + &#x27;\n\n&#x27;));
+      } else if (summaryContent) {
+        stream.write(summaryContent + &#x27;(&#x27; + buildTime + &#x27;)\n\n&#x27;);
+      }
+
+      if (customSummary) {
+        customSummary(buildTime);
+      }
+
+      running = false;
+    }
+  });
+}</pre></li>
+    <li>example usage<pre class="apidocCodePre">n/a</pre></li>
+    </ul>
+
+
+
+    <h2>
+        <a href="#apidoc.element.progress-bar-webpack-plugin.toString" id="apidoc.element.progress-bar-webpack-plugin.toString">
+        function <span class="apidocSignatureSpan">progress-bar-webpack-plugin.</span>toString
+        <span class="apidocSignatureSpan">()</span>
+        </a>
+    </h2>
+    <ul>
+    <li>description and source-code<pre class="apidocCodePre">toString = function () {
+    return text;
+}</pre></li>
+    <li>example usage<pre class="apidocCodePre">n/a</pre></li>
+    </ul>
+
+
+</div>
+
+<div class="apidocSectionDiv">
+<h1><a href="#apidoc.module.progress-bar-webpack-plugin.toString" id="apidoc.module.progress-bar-webpack-plugin.toString">module progress-bar-webpack-plugin.toString</a></h1>
+
+
+    <h2>
+        <a href="#apidoc.element.progress-bar-webpack-plugin.toString.toString" id="apidoc.element.progress-bar-webpack-plugin.toString.toString">
+        function <span class="apidocSignatureSpan">progress-bar-webpack-plugin.</span>toString
+        <span class="apidocSignatureSpan">()</span>
+        </a>
+    </h2>
+    <ul>
+    <li>description and source-code<pre class="apidocCodePre">function toString() { [native code] }</pre></li>
+    <li>example usage<pre class="apidocCodePre">n/a</pre></li>
+    </ul>
+
+
+</div>
+
+<div class="apidocFooterDiv">
+    [ this document was created with
+    <a href="https://github.com/kaizhu256/node-utility2" target="_blank">utility2</a>
+    ]
+</div>
+</div>
