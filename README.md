@@ -1,4 +1,7 @@
-# api documentation for  [progress-bar-webpack-plugin (v1.9.3)](https://github.com/clessg/progress-bar-webpack-plugin#readme)  [![npm package](https://img.shields.io/npm/v/npmdoc-progress-bar-webpack-plugin.svg?style=flat-square)](https://www.npmjs.org/package/npmdoc-progress-bar-webpack-plugin) [![travis-ci.org build-status](https://api.travis-ci.org/npmdoc/node-npmdoc-progress-bar-webpack-plugin.svg)](https://travis-ci.org/npmdoc/node-npmdoc-progress-bar-webpack-plugin)
+# npmdoc-progress-bar-webpack-plugin
+
+#### api documentation for  [progress-bar-webpack-plugin (v1.9.3)](https://github.com/clessg/progress-bar-webpack-plugin#readme)  [![npm package](https://img.shields.io/npm/v/npmdoc-progress-bar-webpack-plugin.svg?style=flat-square)](https://www.npmjs.org/package/npmdoc-progress-bar-webpack-plugin) [![travis-ci.org build-status](https://api.travis-ci.org/npmdoc/node-npmdoc-progress-bar-webpack-plugin.svg)](https://travis-ci.org/npmdoc/node-npmdoc-progress-bar-webpack-plugin)
+
 #### A progress bar for Webpack.
 
 [![NPM](https://nodei.co/npm/progress-bar-webpack-plugin.png?downloads=true&downloadRank=true&stars=true)](https://www.npmjs.com/package/progress-bar-webpack-plugin)
