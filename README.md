@@ -67,7 +67,8 @@
     "scripts": {
         "test": "echo \"Error: no test specified\" && exit 1"
     },
-    "version": "1.9.3"
+    "version": "1.9.3",
+    "bin": {}
 }
 ```
 
